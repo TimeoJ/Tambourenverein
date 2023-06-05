@@ -3,14 +3,15 @@
 #define PIEZO_SENSOR_RIGHT_PIN A6
 #define LED_STRIP_RIGHT_PIN 6
 
-#define PIEZO_SENSOR_LEFT_PIN A4
-#define LED_STRIP_LEFT_PIN 8
+#define PIEZO_SENSOR_LEFT_PIN A2
+#define LED_STRIP_LEFT_PIN 2
 
 #define NUM_LEDS_RIGHT 60
 #define NUM_LEDS_LEFT 60
 
 #define PIEZO_THRESHOLD 600
 
+#define BRIGHTNESS 150
 
 CRGB ledRight[NUM_LEDS_RIGHT];
 CRGB ledLeft[NUM_LEDS_LEFT];
@@ -23,11 +24,10 @@ void setup() {
   FastLED.addLeds<WS2812, LED_STRIP_RIGHT_PIN, GRB>(ledRight, NUM_LEDS_RIGHT);
   FastLED.addLeds<WS2812, LED_STRIP_LEFT_PIN, GRB>(ledLeft, NUM_LEDS_LEFT);
 
-  FastLED.setBrightness(150);
+  FastLED.setBrightness(BRIGHTNESS);
 
-
-  if(!initLED()){
-    return;
+  if (!initLED()) {
+    Error();
   }
 }
 
@@ -39,34 +39,26 @@ void loop() {
   if (piezoValueRight > PIEZO_THRESHOLD) {
 
     toggleLED(20, NUM_LEDS_RIGHT, ledRight);
-
-    Serial.println("Right!");
-    Serial.println(piezoValueRight, DEC);
   }
   if (piezoValueLeft > PIEZO_THRESHOLD) {
 
     toggleLED(20, NUM_LEDS_LEFT, ledLeft);
-
-    Serial.println("Left!");
-    Serial.println(piezoValueLeft, DEC);
   }
 }
 
 void toggleLED(int delay_ms, int len, CRGB led[]) {
 
   for (int i = 0; i < len; i++) {
-    ledLeft[i] = CRGB::Green;
+    led[i] = CRGB::Green;
   }
   FastLED.show();
-  
 
   delay(delay_ms);
 
   for (int i = 0; i < len; i++) {
-    ledLeft[i] = CRGB::Black;
+    led[i] = CRGB::Black;
   }
   FastLED.show();
-
 }
 
 
@@ -78,10 +70,10 @@ bool initLED() {
     }
 
     for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
-      ledRight[i] = CRGB::Green;
+      ledRight[i] = CRGB::Blue;
     }
     FastLED.show();
-    delay(10);
+    delay(50);
 
     for (int i = 0; i < NUM_LEDS_LEFT; i++) {
       ledLeft[i] = CRGB::Black;
@@ -90,7 +82,32 @@ bool initLED() {
     for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
       ledRight[i] = CRGB::Black;
     }
-    delay(10);
+    delay(50);
   }
+
   return true;
+}
+
+void Error() {
+  while (true) {
+
+    for (int i = 0; i < NUM_LEDS_LEFT; i++) {
+      ledLeft[i] = CRGB::Red;
+    }
+    for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
+      ledRight[i] = CRGB::Black;
+    }
+
+    FastLED.show();
+    delay(250);
+
+    for (int i = 0; i < NUM_LEDS_LEFT; i++) {
+      ledLeft[i] = CRGB::Black;
+    }
+    for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
+      ledRight[i] = CRGB::Red;
+    }
+
+    delay(250);
+  }
 }
