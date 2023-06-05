@@ -1,101 +1,96 @@
 #include <FastLED.h>
 
 #define PIEZO_SENSOR_RIGHT_PIN A6
-#define PIEZO_SENSOR_LEFT_PIN A4
-#define LED_SINGLE_PIN 3
 #define LED_STRIP_RIGHT_PIN 6
-#define LED_STRIP_LEFT_PIN 8
-#define PIEZO_THRESHOLD 600
-#define NUM_LEDS 60
 
-CRGB ledRight[NUM_LEDS];
-CRGB ledLeft[NUM_LEDS];
+#define PIEZO_SENSOR_LEFT_PIN A4
+#define LED_STRIP_LEFT_PIN 8
+
+#define NUM_LEDS_RIGHT 60
+#define NUM_LEDS_LEFT 60
+
+#define PIEZO_THRESHOLD 600
+
+
+CRGB ledRight[NUM_LEDS_RIGHT];
+CRGB ledLeft[NUM_LEDS_LEFT];
 
 int piezoValueRight = 0;
 int piezoValueLeft = 0;
 
 void setup() {
 
-  Serial.begin(9600);
-  pinMode(LED_SINGLE_PIN, OUTPUT);
+  FastLED.addLeds<WS2812, LED_STRIP_RIGHT_PIN, GRB>(ledRight, NUM_LEDS_RIGHT);
+  FastLED.addLeds<WS2812, LED_STRIP_LEFT_PIN, GRB>(ledLeft, NUM_LEDS_LEFT);
 
-  FastLED.addLeds<WS2812, LED_STRIP_RIGHT_PIN, GRB>(ledRight, NUM_LEDS);
+  FastLED.setBrightness(150);
 
-  FastLED.addLeds<WS2812, LED_STRIP_LEFT_PIN, GRB>(ledLeft, NUM_LEDS);
 
-  
-
-  for (int i = 0; i < NUM_LEDS; i++) {
-    ledRight[i] = CRGB::Black;
-    ledLeft[i] = CRGB::Black;
+  if(!initLED()){
+    return;
   }
-  FastLED.show();
 }
 
 void loop() {
-  for(int j = 0; j<255;j++){
-for (int i = 0; i < NUM_LEDS; i++) {
-    ledRight[i] = CRGB::Green;
-    ledLeft[i] = CRGB::Green;
-  }
-
-  FastLED.show();
-  
-    FastLED.setBrightness(j);
-    delay(100);
-  }
-
 
   piezoValueRight = analogRead(PIEZO_SENSOR_RIGHT_PIN);
   piezoValueLeft = analogRead(PIEZO_SENSOR_LEFT_PIN);
 
   if (piezoValueRight > PIEZO_THRESHOLD) {
 
-    toggleLEDRight(20);
+    toggleLED(20, NUM_LEDS_RIGHT, ledRight);
 
     Serial.println("Right!");
     Serial.println(piezoValueRight, DEC);
   }
-  if (piezoValueLeft > PIEZO_THRESHOLD){
+  if (piezoValueLeft > PIEZO_THRESHOLD) {
 
-    toggleLEDLeft(20);
+    toggleLED(20, NUM_LEDS_LEFT, ledLeft);
 
     Serial.println("Left!");
     Serial.println(piezoValueLeft, DEC);
   }
-
 }
 
-void toggleLEDLeft(int delay_ms) {
+void toggleLED(int delay_ms, int len, CRGB led[]) {
 
-  for (int i = 0; i < NUM_LEDS; i++) {
-    ledLeft[i] = CRGB::White;
+  for (int i = 0; i < len; i++) {
+    ledLeft[i] = CRGB::Green;
   }
   FastLED.show();
-  digitalWrite(LED_SINGLE_PIN, HIGH);
+  
 
   delay(delay_ms);
 
-  for (int i = 0; i < NUM_LEDS; i++) {
+  for (int i = 0; i < len; i++) {
     ledLeft[i] = CRGB::Black;
   }
   FastLED.show();
-  digitalWrite(LED_SINGLE_PIN, LOW);
+
 }
 
-void toggleLEDRight(int delay_ms) {
 
-  for (int i = 0; i < NUM_LEDS; i++) {
-    ledRight[i] = CRGB::Green;
+bool initLED() {
+
+  for (int j = 0; j < 5; j++) {
+    for (int i = 0; i < NUM_LEDS_LEFT; i++) {
+      ledLeft[i] = CRGB::Green;
+    }
+
+    for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
+      ledRight[i] = CRGB::Green;
+    }
+    FastLED.show();
+    delay(10);
+
+    for (int i = 0; i < NUM_LEDS_LEFT; i++) {
+      ledLeft[i] = CRGB::Black;
+    }
+
+    for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
+      ledRight[i] = CRGB::Black;
+    }
+    delay(10);
   }
-  FastLED.show();
-  digitalWrite(LED_SINGLE_PIN, HIGH);
-
-  delay(delay_ms);
-
-  for (int i = 0; i < NUM_LEDS; i++) {
-    ledRight[i] = CRGB::Black;
-  }
-  FastLED.show();
-  digitalWrite(LED_SINGLE_PIN, LOW);
+  return true;
 }
