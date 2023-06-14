@@ -26,9 +26,7 @@ void setup() {
 
   FastLED.setBrightness(BRIGHTNESS);
 
-  if (!initLED()) {
-    Error();
-  }
+  initLED();
 }
 
 void loop() {
@@ -49,7 +47,7 @@ void loop() {
 void toggleLED(int delay_ms, int len, CRGB led[]) {
 
   for (int i = 0; i < len; i++) {
-    led[i] = CRGB::Green;
+    led[i] = CRGB::Blue;
   }
   FastLED.show();
 
@@ -62,7 +60,7 @@ void toggleLED(int delay_ms, int len, CRGB led[]) {
 }
 
 
-bool initLED() {
+void initLED() {
 
   for (int j = 0; j < 5; j++) {
     for (int i = 0; i < NUM_LEDS_LEFT; i++) {
@@ -70,7 +68,7 @@ bool initLED() {
     }
 
     for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
-      ledRight[i] = CRGB::Blue;
+      ledRight[i] = CRGB::Green;
     }
     FastLED.show();
     delay(50);
@@ -82,10 +80,10 @@ bool initLED() {
     for (int i = 0; i < NUM_LEDS_RIGHT; i++) {
       ledRight[i] = CRGB::Black;
     }
+    FastLED.show();
     delay(50);
-  }
 
-  return true;
+  }
 }
 
 void Error() {
