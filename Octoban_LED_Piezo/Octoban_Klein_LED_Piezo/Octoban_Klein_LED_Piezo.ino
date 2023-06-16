@@ -7,7 +7,7 @@
 #define LED_STRIP_LEFT_PIN 2
 
 #define NUM_LEDS_RIGHT 60
-#define NUM_LEDS_LEFT 60
+#define NUM_LEDS_LEFT 80
 
 #define PIEZO_THRESHOLD 600
 
