@@ -1,0 +1,108 @@
+{
+  "config_version": 2,
+  "verein": "Tambourenverein Zofingen",
+  "mitternacht_als": "23:59",
+  "ueberspringen": [
+    "keine probe"
+  ],
+  "folgezeilen_anhaengen": true,
+  "csv": {
+    "trennzeichen": ";",
+    "kodierung": "utf-8-sig",
+    "alles_in_anfuehrungszeichen": true,
+    "spalten": [
+      "Datum",
+      "Beginn",
+      "Ende",
+      "Name",
+      "Raum",
+      "Ort",
+      "Treffpunkt",
+      "Information",
+      "Terminart",
+      "Kategorien",
+      "Verein"
+    ],
+    "kategorien_trennzeichen": ", "
+  },
+  "erlaubte_terminarten": [
+    "Probe",
+    "Auftritt",
+    "Sonstiges",
+    "Probenanfrage",
+    "Auftrittsanfrage",
+    "Information"
+  ],
+  "standard_terminart": "",
+  "terminart_regeln": {
+    "Probe": [
+      "Probe",
+      "Probesamstag",
+      "Probesonntag",
+      "Marschprobe"
+    ],
+    "Auftritt": [
+      "Auftritt",
+      "Ständli",
+      "Umzug",
+      "Konzert",
+      "Marschmusikparade",
+      "Marschparade",
+      "Fasnacht",
+      "Hirsmontag",
+      "Kinderfest",
+      "Augustfeier",
+      "Fahnenweihe"
+    ],
+    "Sonstiges": [
+      "GV",
+      "DV",
+      "Sitzung",
+      "Vereinsabend",
+      "Vereinsmeisterschaft",
+      "Grillplausch",
+      "Hochzeit",
+      "Helfereinsatz",
+      "Wettspiel"
+    ]
+  },
+  "kategorie_regeln": {
+    "Probe": [
+      "Probe"
+    ],
+    "Fasnacht": [
+      "Fasnacht",
+      "Hirsmontag",
+      "Schnitzelbank"
+    ],
+    "Auftritt": [
+      "Auftritt",
+      "Ständli",
+      "Konzert",
+      "Marschparade",
+      "Marschmusikparade",
+      "Kinderfest",
+      "Umzug",
+      "Augustfeier",
+      "Fahnenweihe"
+    ],
+    "Verein": [
+      "GV",
+      "DV",
+      "Sitzung",
+      "Vereinsabend",
+      "Vereinsmeisterschaft",
+      "Grillplausch",
+      "Hochzeit",
+      "Helfereinsatz"
+    ],
+    "Wettspiel": [
+      "Wettspiel",
+      "ZTPF",
+      "EJTPF",
+      "ZJTPF",
+      "ETPF",
+      "OTV"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+# Baut eine eigenständige Windows-/macOS-/Linux-Anwendung (ohne installiertes Python) mit PyInstaller.
+# Auf GitHub: Actions -> "Anwendung bauen" -> Run workflow; die fertigen Dateien sind unter "Artifacts" zum Download.
+name: Anwendung bauen
+on: workflow_dispatch
+jobs:
+  bauen:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install customtkinter pdfplumber openpyxl pyinstaller
+      - run: pyinstaller --noconfirm --windowed --name KonzertmeisterImporter --collect-all customtkinter --collect-all pdfplumber main.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: KonzertmeisterImporter-${{ matrix.os }}
+          path: dist/

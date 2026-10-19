@@ -1,0 +1,72 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# ===== Virtuelle Umgebungen (werden von starten.bat / uv automatisch erstellt) =====
+.venv/
+venv/
+env/
+ENV/
+
+# ===== uv =====
+# uv.lock sollte eingecheckt werden (reproduzierbare Installation). Nur ignorieren, wenn nicht gewünscht:
+# uv.lock
+
+# ===== PyInstaller (Einzelanwendung) =====
+*.spec
+dist/
+build/
+
+# ===== Tests / Coverage / Caches =====
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# ===== Projektdaten: nie ins Repository =====
+# Tätigkeitsprogramme und erzeugte CSV-Dateien enthalten Vereinsdaten
+km_importer/input/*
+km_importer/output/*
+input/*
+output/*
+!input/.gitkeep
+!output/.gitkeep
+!km_importer/input/.gitkeep
+!km_importer/output/.gitkeep
+*.csv
+# Beispieldateien im Projekt sind erlaubt (fiktive Daten)
+!**/beispiele/*.xlsx
+!**/beispiele/*.pdf
+# Echte Programme zum Testen
+echt/
+
+# ===== Editor / IDE =====
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ===== Betriebssystem =====
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ===== Sonstiges =====
+*.log
+*.bak
+*.tmp
+.env
+.env.*
