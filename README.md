@@ -1,2 +1,2 @@
 # Tambourenverein
-Tambourenverein Electronic Projects
+Tambourenverein Electronic and Software Projects
