@@ -253,6 +253,21 @@ class ValidatorTests(unittest.TestCase):
     def test_ungueltige_terminart(self):
         self.assertEqual(status(pruefe(self.basis(terminart="Fest"), CFG)), FEHLER)
 
+    def test_kategorie_laenge_3_bis_20(self):
+        for ok in ("Probe", "Abc", "A" * 20, "Probe, Fasnacht", "Probe; Verein"):
+            self.assertEqual(status(pruefe(self.basis(kategorien=ok), CFG)), OK, ok)
+        for falsch in ("Ab", "A" * 21, "Probe, X", "Probe, " + "B" * 21):
+            m = pruefe(self.basis(kategorien=falsch), CFG)
+            self.assertEqual(status(m), FEHLER, falsch)
+            self.assertTrue(any("Kategorie" in x.text for x in m), falsch)
+
+    def test_leere_kategorie_ist_erlaubt(self):
+        self.assertEqual(status(pruefe(self.basis(kategorien=""), CFG)), OK)
+
+    def test_standard_kategorien_aus_config_sind_gueltig(self):
+        for name in CFG["kategorie_regeln"]:
+            self.assertTrue(3 <= len(name) <= 20, name)
+
     def test_warnung_verschwindet_nach_pruefung(self):
         t = self.basis(warnungen=["etwas ist unklar"])
         self.assertEqual(status(pruefe(t, CFG)), WARNUNG)

@@ -20,13 +20,21 @@ Den Import in Konzertmeister selbst machst du von Hand.
 
 ## Installation
 
-**Am einfachsten, ohne installiertes Python:** Doppelklick auf `starten.bat` (Windows) bzw. `./starten.sh` (Linux/macOS).
-Beim ersten Start wird das Werkzeug [uv](https://docs.astral.sh/uv/) geholt, das wiederum Python und alle Pakete
-in einer eigenen Umgebung (`.venv`) einrichtet (Internet nötig, dauert einmalig etwa eine Minute). Danach startet die GUI sofort.
-Optionen gehen auch hier: `starten.bat programm.pdf --von 01.11.2026 --bis 31.12.2026`.
+Es gibt zwei getrennte Skripte, damit nichts ohne dein Wissen passiert:
+
+- **`setup.bat` / `./setup.sh` – einmalige Einrichtung.** Das Skript prüft zuerst nur lesend, was schon da ist
+  (`--pruefen` zeigt nur den Stand an). Fehlt etwas, erklärt es genau, was passieren würde (Herkunft der Downloads,
+  Zielordner, Grösse der Eingriffe) und **fragt vor dem Download nach**. Bei «Nein» wird nichts verändert.
+  Danach legt es im Programmordner `.uv/` (das Werkzeug [uv](https://docs.astral.sh/uv/), ohne Admin-Rechte,
+  ohne PATH-Änderung) und `.venv/` (Python-Pakete) an. Ist Python schon installiert, wird dieses verwendet, sonst lädt uv eines.
+  Der uv-Installer wird als Datei gespeichert (`.uv/install-uv.ps1` bzw. `.sh`) und kann angesehen werden.
+  Alles liegt im Programmordner; zum Entfernen genügt es, den Ordner zu löschen.
+- **`starten.bat` / `./starten.sh` – Programm starten.** Lädt nichts herunter und installiert nichts. Ist die
+  Einrichtung noch nicht gemacht, weist es auf `setup` hin. Optionen gehen auch hier:
+  `starten.bat programm.pdf --von 01.11.2026 --bis 31.12.2026`.
 
 Weitere Wege:
-- **Python ist schon da:** `python starten.py` legt `.venv` an und installiert die Pakete selbst. Alternativ `uv run main.py`.
+- **Python ist schon da:** `python starten.py` legt `.venv` an und installiert die Pakete selbst (fragt vorher nach). Alternativ `uv run main.py`.
 - **Echte Einzeldatei (.exe/.app) ohne Python:** In GitHub unter *Actions → «Anwendung bauen»* starten
   (`.github/workflows/build.yml`, PyInstaller). Die fertige Anwendung ist dann unter *Artifacts* herunterladbar.
   `config.json`, `input/` und `output/` liegen dann neben der Anwendung.
@@ -147,7 +155,9 @@ Terminart und Kategorien werden anhand von Stichwörtern im Terminnamen bestimmt
 
 - `terminart_regeln`: von oben nach unten, der erste Treffer gewinnt. Erlaubt sind nur die Terminarten
   aus `erlaubte_terminarten` (Probe, Auftritt, Sonstiges, Probenanfrage, Auftrittsanfrage, Information).
-- `kategorie_regeln`: hier können mehrere Kategorien gleichzeitig zutreffen (Trennzeichen `, `).
+- `kategorie_regeln`: hier können mehrere Kategorien gleichzeitig zutreffen (Trennzeichen `, `). **Jeder Kategoriename
+  muss laut Konzertmeister 3 bis 20 Zeichen lang sein**; sonst ist die Zeile rot und der Export gesperrt
+  (Grenzen in `kategorie_zeichen`).
   **Die Kategorienamen müssen in Konzertmeister genau so existieren.** Die mitgelieferten Namen sind Beispiele.
 - Stichwörter mit höchstens 3 Buchstaben (GV, DV, OTV) zählen nur als ganzes Wort.
 - Wird nichts erkannt (z. B. «Powerman Zofingen», «Eidg. Musikfest Biel»), bleibt das Feld leer und die Zeile gelb;

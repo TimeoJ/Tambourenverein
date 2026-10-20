@@ -34,6 +34,8 @@ STANDARD_CONFIG = {
         ],
         "kategorien_trennzeichen": ", ",
     },
+    # Konzertmeister verlangt für jede Kategorie zwischen 3 und 20 Zeichen (Verstoss = Fehler, blockiert den Export).
+    "kategorie_zeichen": [3, 20],
     "erlaubte_terminarten": [
         "Probe", "Auftritt", "Sonstiges", "Probenanfrage", "Auftrittsanfrage", "Information",
     ],

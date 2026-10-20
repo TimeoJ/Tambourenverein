@@ -18,6 +18,21 @@ class Meldung:
     text: str
 
 
+def kategorien_liste(text: str) -> list[str]:
+    """Zerlegt das Kategorien-Feld (Trennung mit Komma oder Semikolon) in einzelne Namen."""
+    return [k.strip() for k in re.split(r"[;,]", text or "") if k.strip()]
+
+
+def _pruefe_kategorien(t: Termin, cfg: dict) -> list[Meldung]:
+    """Jede Kategorie muss laut Konzertmeister zwischen 3 und 20 Zeichen lang sein."""
+    kleinste, groesste = cfg.get("kategorie_zeichen", [3, 20])
+    m = []
+    for k in kategorien_liste(t.kategorien):
+        if not kleinste <= len(k) <= groesste:
+            m.append(Meldung(FEHLER, f"Kategorie '{k}' hat {len(k)} Zeichen (erlaubt: {kleinste} bis {groesste})"))
+    return m
+
+
 def pruefe(t: Termin, cfg: dict) -> list[Meldung]:
     m: list[Meldung] = []
     if t.datum_obj() is None:
@@ -37,6 +52,7 @@ def pruefe(t: Termin, cfg: dict) -> list[Meldung]:
                 m.append(Meldung(WARNUNG, "Ende 00:00 (Mitternacht): in Konzertmeister prüfen, ob das akzeptiert wird"))
         elif ende <= beginn:
             m.append(Meldung(FEHLER, "Ende liegt nicht nach dem Beginn"))
+    m.extend(_pruefe_kategorien(t, cfg))
     if t.terminart and t.terminart not in cfg.get("erlaubte_terminarten", []):
         m.append(Meldung(FEHLER, f"Terminart '{t.terminart}' ist in Konzertmeister nicht erlaubt"))
     if not t.geprueft:
